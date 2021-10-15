@@ -1,6 +1,8 @@
 // Profile general information
 const overview = document.querySelector(".overview");
 
+const repoList = document.querySelector(".repo-list");
+
 const username = "viet-v";
 
 
@@ -13,7 +15,7 @@ const getProfile = async function () {
 
 getProfile();
 
-
+// Show user general info
 const userInfo = function (info) {
     const userDiv = document.createElement("div");
     userDiv.classList.add("user-info");
@@ -29,4 +31,22 @@ const userInfo = function (info) {
         </div>
         `;
     overview.append(userDiv);
+};
+
+const getRepo = async function () {
+    const data = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repos = await data.json();
+    console.log(repos);
+    eachRepo(repos);
+};
+
+getRepo();
+
+const eachRepo = function (repos){
+    for (let repo of repos) {
+        const li = document.createElement("li");
+        li.classList.add("repo");
+        li.innerHTML = `<h3>${repo.name}</h3>`;
+        repoList.append(li);
+    }
 };
